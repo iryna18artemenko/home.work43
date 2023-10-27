@@ -32,7 +32,7 @@ const Users  = () => {
         return (
          <ul>
              {users.map(user => (
-                <Link className="link" key={user.id} to={`/users/${users.id}`}>
+                <Link className="link" key={user.id} to={`/users/${user.id}`}>
                     <li>Username: {user.username} </li>
                     <li>Email: {user.email}</li>
                 </Link>

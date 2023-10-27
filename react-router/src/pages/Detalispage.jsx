@@ -2,9 +2,8 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 
-const Detalis  = () => {
-    const {id} = useParams();
-    const {albumId} = useParams();
+const Detalis  =  () => {
+    const {id, albumId} = useParams();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [user, setUser] = useState([]);
@@ -26,23 +25,24 @@ const Detalis  = () => {
           )
       }, [id]);
   
-      useEffect(() => {
-            fetch(`https://jsonplaceholder.typicode.com/users/${id}/albums`)
-              .then(res => res.json())
-              .then(
-                (result) => {
-                  setIsLoaded(true);
-                  setAlbums(result);
-                },
-                (error) => {
-                  setIsLoaded(true);
-                  setError(error);
-                }
-              )
-          }, [id]);
+    
+    function albumClick () { 
+        fetch(`https://jsonplaceholder.typicode.com/users/${id}/albums`)
+            .then(res => res.json())
+            .then(
+            (result) => {
+                setIsLoaded(true);
+                setAlbums(result);
+            },
+            (error) => {
+                setIsLoaded(true);
+                setError(error);
+            }
+        )
+    };
 
-    useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos`)
+    function photoClick () {
+        fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos`)
         .then(res => res.json())
         .then(
         (result) => {
@@ -52,29 +52,7 @@ const Detalis  = () => {
         (error) => {
             setIsLoaded(true);
             setError(error);
-        }
-        )
-    }, [albumId]);
-    
-    function albumClick () { 
-        setAlbums (albums.filter(album => (
-
-                <ul key={album.id} to={`/users/${albums.userId}/albums`}>
-                    <li>{album.title} </li>
-                    <button onClick={() => photoClick()}>Photos</button>
-                </ul>
-        )))
-    };
-
-    function photoClick () {
-        console.log (photos.filter(photo => (
-            <ul key={photo.id} to={`/albums/${photos.albumId}/photos`}>
-                <li> {photo.title} </li>
-                <li> {photo.url} </li>
-                <li> {photo.thumbnailUrl} </li>
-            </ul>
-             ))
-       )
+        })
     };
 
     if (error) {
@@ -90,9 +68,14 @@ const Detalis  = () => {
             <h1>{user.name}</h1>
             <button onClick={() => albumClick()}>Album</button>
             {albums.map(album => (
-                <ul key={album.id} to={`/users/${albums.userId}/albums`}>
+                <ul key={album.id} to={`/users/${album.userId}/albums`}>
                      <li>{album.title} </li>
                      <button onClick={() => photoClick()}>Photos</button>
+                    {photos.map(photo => (
+                    <ul key={photo.id} to={`/albums/${photo.albumId}/photos`}>
+                        <li> {photo.title} </li>
+                    </ul>
+                    ))} 
                  </ul>
                 ))}
             </div>
