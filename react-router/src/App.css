@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  justify-content: center;
+}
+.page {
+  
+  color: black;
+  font-size: 24px;
+  text-decoration: none;
+  margin: 10px;
+}
+
+.page:hover {
+  text-decoration: underline;
+}
