@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 
 const Detalis  =  () => {
-    const {id, albumId} = useParams();
+    const {id} = useParams();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [user, setUser] = useState([]);
@@ -41,7 +41,7 @@ const Detalis  =  () => {
         )
     };
 
-    function photoClick () {
+    function photoClick (albumId) {
         fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos`)
         .then(res => res.json())
         .then(
@@ -65,19 +65,19 @@ const Detalis  =  () => {
     <div> 
         {user && (
             <div>
-            <h1>{user.name}</h1>
-            <button onClick={() => albumClick()}>Album</button>
-            {albums.map(album => (
-                <ul key={album.id} to={`/users/${album.userId}/albums`}>
-                     <li>{album.title} </li>
-                     <button onClick={() => photoClick()}>Photos</button>
-                    {photos.map(photo => (
-                    <ul key={photo.id} to={`/albums/${photo.albumId}/photos`}>
-                        <li> {photo.title} </li>
+                <h1>{user.name}</h1>
+                <button onClick={() => albumClick()}>Albums</button>
+                {albums.map(album => (
+                    <ul className="album" key={album.id} to={`/users/${album.userId}/albums`}>
+                        <li>{album.title} </li>
+                        <button onClick={() => photoClick(album.id)}>Photos</button>
                     </ul>
-                    ))} 
-                 </ul>
-                ))}
+                    ))}
+                {photos.map(photo => (
+                    <ul  key={photo.id} to={`/albums/${photo.albumId}/photos`}>
+                        <li className="photo"> {photo.title} </li>
+                    </ul>
+                ))} 
             </div>
             
         )} 
